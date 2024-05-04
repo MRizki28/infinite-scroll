@@ -16,11 +16,12 @@ const App: React.FC = () => {
 
   const getAllData = async (page: any) => {
     try {
-      const response = await axios.get(`https://dummyjson.com/products?skip=${(page - 1) * 30}`)
+      const limit = 30
+      const response = await axios.get(`https://dummyjson.com/products?skip=${(page - 1) * limit}&limit=${limit}`)
       setProduct(prevProduct => [...prevProduct, ...response.data.products]);
       setTotal(response.data.total);
       console.log(response)
-      setHasMore(response.data.total > page * 30);
+      setHasMore(response.data.total > page * limit);
     } catch (error) {
       console.log(error)
     }
@@ -30,13 +31,14 @@ const App: React.FC = () => {
     getAllData(page)
   }, [page])
 
-
   const fetchMoreData = () => {
     if (product.length >= total) {
       setHasMore(false); 
       return;
     }
-    setPage(prevPage => prevPage + 1);
+    setTimeout(() => {
+      setPage(prevPage => prevPage + 1);
+    }, 2000);
   };
 
 
